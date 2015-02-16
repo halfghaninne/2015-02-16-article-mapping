@@ -9,7 +9,7 @@ class Article
   
   attr_reader :id
   
-  attr_accessor :name
+  attr_accessor :date, :author, :text
   
   #
   #
@@ -19,7 +19,6 @@ class Article
   
   def initialize(options)
     @date = options["date"]
-    @time = options["time"]
     @author = options["author_id"]
     @text = options["text"]
     

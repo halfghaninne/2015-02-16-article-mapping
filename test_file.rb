@@ -12,7 +12,7 @@ require_relative 'location.rb'
 
 class DatabaseTest < Minitest::Test
   
-  def clear_setup
+  def setup
     DATABASE.execute("DELETE FROM articles")
     DATABASE.execute("DELETE FROM location_keys")
     DATABASE.execute("DELETE FROM authors")
@@ -29,9 +29,7 @@ class DatabaseTest < Minitest::Test
     results = DATABASE.execute("SELECT name FROM authors WHERE id = #{id}")
     
     added_record = results[0]
-    
-    binding.pry
-    
+        
     assert_equal(1, results.length)
     assert_equal("Tester Testington", added_record["name"])
   end
@@ -114,9 +112,39 @@ class DatabaseTest < Minitest::Test
     assert_equal(1, return_table.length)
   end
 
-
 ##############################
 #       Article Tests        #
 ##############################
+
+  def test_add_article
+    newauthor = Author.new(name: "Place Holder")
+    newauthor.insert("authors")
+    
+    newart = Article.new("date" => "2015-02-16 15:21:00.000", "author_id" => 1, 
+                        "text" => "This is sample text of an article. I am a little
+                        nervous about entering in all of this text in the form of
+                        a string. I am curious to think how this might be formatted
+                        from HTML user interface to Ruby back-end operations. 
+                        I am particularly worried about paragraph separation and 
+                        special characters. Yikes.")
+                        
+    newart.insert("articles")
+    
+    results = DATABASE.execute("SELECT * FROM articles")
+    added_record = results[0]
+    
+    return_table = Article.all("articles")
+    
+    assert_equal(1, added_record["id"])
+    assert_equal(1, return_table.length)
+  end
+
+  # def test_list_all_articles
+  # end
+
+  def delete_article
+  end
+
+
 
 end

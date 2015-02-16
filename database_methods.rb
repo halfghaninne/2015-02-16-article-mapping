@@ -68,8 +68,8 @@ module DatabaseMethods
       @id = DATABASE.last_insert_row_id
       
     elsif table_name == "articles"
-      DATABASE.execute("INSERT INTO articles (date, time, author, text) VALUES 
-                      (#{@date}, #{@time}, #{@author}, '#{@text}')")
+      DATABASE.execute("INSERT INTO articles (date, author, text) VALUES 
+                      ('#{@date}', #{@author}, '#{@text}')")
       @id = DATABASE.last_insert_row_id
       
     end
