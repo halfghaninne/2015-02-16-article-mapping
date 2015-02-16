@@ -59,16 +59,17 @@ module DatabaseMethods
   
   def insert(table_name)
     if table_name == "authors"
-      DATABASE.execute("INSERT INTO authors (name) VALUES '#{@name}'")
+      DATABASE.execute("INSERT INTO authors (name) VALUES ('#{@name}')")
       @id = DATABASE.last_insert_row_id
       
     elsif table_name == "location_keys"
       DATABASE.execute("INSERT INTO location_keys (location_name) VALUES 
-                        '#{@location_name}")
+                        ('#{@location_name}')")
       @id = DATABASE.last_insert_row_id
       
     elsif table_name == "articles"
-      DATABASE.execute("INSERT INTO articles (date, time, author, text) VALUES #{@date}, #{@time}, #{@author}, '#{@text}'")
+      DATABASE.execute("INSERT INTO articles (date, time, author, text) VALUES 
+                      (#{@date}, #{@time}, #{@author}, '#{@text}')")
       @id = DATABASE.last_insert_row_id
       
     end

@@ -1,16 +1,22 @@
 require 'pry'
 require 'sqlite3'
 
-#require_relative
+require_relative "database_methods"
 
 class Location
   
+  include DatabaseMethods
+  
   attr_reader :id
   
-  #include Methods 
+  #
+  #
+  #
+  #
+  #
   
   def initialize(options)
-    @location_name = options(:location_name)
+    @location_name = options[:location_name]
   end 
   
 end
