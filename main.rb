@@ -10,4 +10,6 @@ require_relative "author.rb"
 require_relative "article.rb"
 require_relative "location.rb"
 
-binding.pry
+get "/" do
+  erb :homepage
+end
