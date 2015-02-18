@@ -10,7 +10,7 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS location_keys (id INTEGER PRIMARY
 #add in another field later - after figuring out what kind of input to pass into Google Maps API
 
 DATABASE.execute("CREATE TABLE IF NOT EXISTS articles (id INTEGER PRIMARY KEY, 
-                  date DATE, author INTEGER, text TEXT, title TEXT, FOREIGN KEY(author) 
+                  date DATE, author INTEGER, title TEXT, text TEXT, FOREIGN KEY(author) 
                   REFERENCES authors(id))")
 
 DATABASE.execute("CREATE TABLE IF NOT EXISTS articles_with_locations 

@@ -16,25 +16,20 @@ require_relative "models/location.rb"
 get "/" do
   erb :homepage
   
-  @article_values_array = Article.all("articles")
-  n = @article_values_array.length
-  
-  @front_page_array = []
-  
-  x = n-9
-  until x == n do |hash|
-    @title = hash["title"]
-    @author = hash["author_id"]
-      return_array = Author.find_by_id("authors", @author.to_i)
-      author_hash = return_array[0]
-    @author_name = author_hash["name"]
-    @text = hash["text"].byteslice(0..70)
-    
-    @formatting_hash = {"title" => @title, "author_name" => @author_name, 
-                        "text" => @text}
-                        
-    @front_page_array << @formatting_hash
-  end
+  # x = n-9
+  # until x == n do |hash|
+  #   @title = hash["title"]
+  #   @author = hash["author_id"]
+  #     return_array = Author.find_by_id("authors", @author.to_i)
+  #     author_hash = return_array[0]
+  #   @author_name = author_hash["name"]
+  #   @text = hash["text"].byteslice(0..70)
+  #
+  #   @formatting_hash = {"title" => @title, "author_name" => @author_name,
+  #                       "text" => @text}
+  #
+  #   @front_page_array << @formatting_hash
+  # end
   
 end
 
@@ -60,12 +55,19 @@ get "/review_draft" do
 end
 
 get "/new_article" do
-  # @date = params[:date]
+  @date = params[:date]
   @author = params[:author]
   @title = params[:title]
   @text = params[:article_text]
   
-  new_entry = Article.new("author_id" => @author, "title" => @title, 
+  @sql_formatted_date = @date.byteslice(0..9)
+  @sql_formatted_time = @date.byteslice(11..18)
+  
+  @sql_date_entry = @sql_formatted_date + " " + @sql_formatted_time
+  
+  @html_formatted_date = @sql_formatted_date + " " + @sql_formatted_time.byteslice(0..4)
+  
+  new_entry = Article.new("date" => @sql_date_entry, "author_id" => @author, "title" => @title, 
                           "text" => @text)
   
   new_entry.insert("articles")
