@@ -12,7 +12,6 @@ require_relative "models/article.rb"
 require_relative "models/location.rb"
 
 
-
 #### I THINK IT WOULD BE GOOD HERE TO DEFINE @ VARIABLES FOR ALL ARTICLES ON THE HOMEPAGE IN A MODULE. ####
 
 get "/" do
@@ -54,7 +53,7 @@ end
 get "/submit_draft" do
   @author_values_array = Author.all("authors")
   
-  @location_values_array = Location.all("locations")
+  @location_values_array = Location.all("location_keys")
 
   erb :"articles/submit_draft"
 end
@@ -64,6 +63,20 @@ get "/review_draft" do
   @author = params[:author].to_i
   @title = params[:title]
   @text = params[:article_text]
+  
+  @location_values_array = Location.all("location_keys")
+  @location_tag = params[:existing_location_tag] #numeric id value for location
+  
+  if params[:city] != nil
+    
+    @location_name = params[:location_name]
+    @business_name = params[:business_name]
+    @street = params[:street]
+    @city = params[:city]
+    @state = params[:state]
+    @country = params[:country]
+    
+  end
 
   erb :"articles/review_draft"
 
@@ -87,6 +100,11 @@ get "/new_article" do
                           "text" => @text)
   
   new_entry.insert("articles")
+  
+  #### 
+  #### LOCATION STUFF
+  ####
+  ####
   
   @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
   # RIGHT NOW THIS IS PUTTING FOUR <br> TAGS BETWEEN PARAGRAPHS. UGH.
