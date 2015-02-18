@@ -2,6 +2,7 @@ require 'sinatra'
 
 require 'pry'
 require 'sqlite3'
+require 'geocoder'
 
 DATABASE = SQLite3::Database.new("article_info.db")
 
@@ -11,24 +12,37 @@ require_relative "models/article.rb"
 require_relative "models/location.rb"
 
 
+
 #### I THINK IT WOULD BE GOOD HERE TO DEFINE @ VARIABLES FOR ALL ARTICLES ON THE HOMEPAGE IN A MODULE. ####
 
 get "/" do
   erb :homepage
   
-  # x = n-9
-  # until x == n do |hash|
-  #   @title = hash["title"]
-  #   @author = hash["author_id"]
-  #     return_array = Author.find_by_id("authors", @author.to_i)
-  #     author_hash = return_array[0]
-  #   @author_name = author_hash["name"]
-  #   @text = hash["text"].byteslice(0..70)
+  ##########################################################
+  # METHODS FOR BRINGING LATEST ARTICLES TO THE FRONT PAGE #
+  ##########################################################
+   
+  # @article_values_array = Article.all("articles")
+  #   # => an Array of Hashes
+  # n = @article_values_array.length
   #
-  #   @formatting_hash = {"title" => @title, "author_name" => @author_name,
-  #                       "text" => @text}
+  # @front_page_array = []
   #
-  #   @front_page_array << @formatting_hash
+  # x == (n - 1)
+  # until x == (n - 10) do
+  #   hash = @article_values_array[x]
+  #     @title = hash["title"]
+  #     @author = hash["author_id"]
+  #       return_array = Author.find_by_id("authors", @author.to_i)
+  #       author_hash = return_array[0]
+  #     @author_name = author_hash["name"]
+  #     @text = hash["text"].byteslice(0..70)
+  #
+  #     @formatting_hash = {"title" => @title, "author_name" => @author_name,
+  #                         "text" => @text}
+  #
+  #     @front_page_array << @formatting_hash
+  #   x -= 1
   # end
   
 end
@@ -39,6 +53,8 @@ end
 
 get "/submit_draft" do
   @author_values_array = Author.all("authors")
+  
+  @location_values_array = Location.all("locations")
 
   erb :"articles/submit_draft"
 end

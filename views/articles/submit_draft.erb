@@ -13,6 +13,25 @@
    
 <!-- CONSIDER FINDING *ANOTHER* API FOR A TEXT EDITOR? -->
    Text:<br><textarea name= "article_text" rows="40" cols ="150" spellcheck="true"></textarea><br><br>
+   
+   Location tags:
+   
+   Choose an existing location: <select name="location" size="1">
+       <option value="nil">---</option>
+       <% @location_values_array.each do |hash| %>
+       <option value="<%= hash["id"] %>"><%= hash["location_name"]%> <i><%= hash["business_name"]%>, <%= hash["street"].byteslice(0..13)%></i></option>
+       <% end %>
+  </select><br><br>
+   
+   
+   Create new location:
+   Location name (nickname, for search purposes):<input type ="text" name ="location_name"><br>
+   Business name: <input type ="text" name ="business_name"><br>
+   Street address: <input type ="text" name ="street"><br>
+   City<sup>*</sup>: <input type ="text" name ="city"><br>
+   State<sup>*</sup>: <input type ="text" name ="state"><br>
+   Country: <input type ="text" name ="country">USA<br>
+   <b><sup>*</sup>required field</b>
 
     <input type ="submit">
    
