@@ -9,7 +9,7 @@ class Article
   
   attr_reader :id
   
-  attr_accessor :date, :author, :text
+  attr_accessor :date, :author, :text, :title
   
   #
   #

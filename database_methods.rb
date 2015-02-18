@@ -14,13 +14,13 @@ module DatabaseMethods
     #
     #
     #
-    #
+    # Returns Array of Hashes
     
     def find_by_id(table_name, record_id)
-      resuts = DATABASE.execute("SELECT *  FROM #{table_name} WHERE id = 
+      results = DATABASE.execute("SELECT *  FROM #{table_name} WHERE id = 
                                 #{record_id}")
-      record_details = results[0]
-      self.new(record_details)
+      # author_hash = results[0]
+      # self.new("id" => author_hash["id"], "name" => author_hash["name"])
       
     end
     
@@ -28,7 +28,7 @@ module DatabaseMethods
     #
     #
     #
-    #
+    # Returns: Array of Hashes
     
     # CHANGE TO RETURN AN OBJECT, NOT ARRAY   
     def all(table_name)
