@@ -21,7 +21,7 @@ class Article
     @date = options["date"]
     @author = options["author_id"]
     @text = options["text"]
-    
+    @title = options["title"]
   end 
   
   #

@@ -5,16 +5,37 @@ require 'sqlite3'
 
 DATABASE = SQLite3::Database.new("article_info.db")
 
-require_relative "database_setup.rb"
-require_relative "author.rb"
-require_relative "article.rb"
-require_relative "location.rb"
+require_relative "models/database_setup.rb"
+require_relative "models/author.rb"
+require_relative "models/article.rb"
+require_relative "models/location.rb"
 
 
 #### I THINK IT WOULD BE GOOD HERE TO DEFINE @ VARIABLES FOR ALL ARTICLES ON THE HOMEPAGE IN A MODULE. ####
 
 get "/" do
   erb :homepage
+  
+  @article_values_array = Article.all("articles")
+  n = @article_values_array.length
+  
+  @front_page_array = []
+  
+  x = n-9
+  until x == n do |hash|
+    @title = hash["title"]
+    @author = hash["author_id"]
+      return_array = Author.find_by_id("authors", @author.to_i)
+      author_hash = return_array[0]
+    @author_name = author_hash["name"]
+    @text = hash["text"].byteslice(0..70)
+    
+    @formatting_hash = {"title" => @title, "author_name" => @author_name, 
+                        "text" => @text}
+                        
+    @front_page_array << @formatting_hash
+  end
+  
 end
 
 # get "/login_to_submit" do
@@ -43,6 +64,11 @@ get "/new_article" do
   @author = params[:author]
   @title = params[:title]
   @text = params[:article_text]
+  
+  new_entry = Article.new("author_id" => @author, "title" => @title, 
+                          "text" => @text)
+  
+  new_entry.insert("articles")
   
   @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
   # RIGHT NOW THIS IS PUTTING FOUR <br> TAGS BETWEEN PARAGRAPHS. UGH.
