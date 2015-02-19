@@ -27,17 +27,16 @@
        <option value="nil">---</option>
        <% @location_values_array.each do |hash| %>
        <% if hash["id"]==@existing_location_tag %>
-       <option value="<%= hash["id"] %>" selected="selected"><%= hash["location_name"]%> <i><%= hash["business_name"]%>, <%= hash["street"].byteslice(0..13)%></i></option>
+       <option value="<%= hash["id"] %>" selected="selected"><%= hash["location_name"]%> <i><%= hash["street"].byteslice(0..15)%></i></option>
        <% else %>
-       <option value="<%= hash["id"] %>"><%= hash["location_name"]%> <i><%= hash["business_name"]%>, <%= hash["street"].byteslice(0..13)%></i></option>
+       <option value="<%= hash["id"] %>"><%= hash["location_name"]%> <i><%= hash["street"].byteslice(0..15)%></i></option>
        <% end%>
        <% end %>
      </select><br><br>
      
      
    Create new location:<br><br>
-   Location name (nickname, for search purposes):<input type ="text" name ="location_name" value ="<%= @location_name %>"><br>
-   Business name: <input type ="text" name ="business_name" value ="<%= @business_name %>"><br>
+   Location name (business name or nickname, for search purposes)<sup><b>*</b></sup>:<input type ="text" name ="location_name" value ="<%= @location_name %>"><br>
    Street address: <input type ="text" name ="street" value ="<%= @street %>"><br>
    City<sup><b>*</b></sup>: <input type ="text" name ="city" value ="<%= @city %>"><br>
    State<sup><b>*</b></sup>: <input type ="text" name ="state" value ="<%= @state %>"><br>

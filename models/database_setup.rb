@@ -6,7 +6,7 @@ DATABASE.results_as_hash = true
 DATABASE.execute("CREATE TABLE IF NOT EXISTS authors (id INTEGER PRIMARY KEY, name TEXT)")
 
 DATABASE.execute("CREATE TABLE IF NOT EXISTS location_keys (id INTEGER PRIMARY 
-                  KEY, location_name TEXT UNIQUE, business_name TEXT, street TEXT UNIQUE,
+                  KEY, location_name TEXT UNIQUE NOT NULL, street TEXT UNIQUE,
                   city TEXT NOT NULL, state TEXT NOT NULL, country TEXT)") 
 #add in another field later - after figuring out what kind of input to pass into Google Maps API
 

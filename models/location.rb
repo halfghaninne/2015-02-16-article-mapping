@@ -9,7 +9,7 @@ class Location
   
   attr_reader :id
   
-  attr_accessor :location_name, :business_name, :street, :city, :state, :country
+  attr_accessor :location_name, :street, :city, :state, :country
   
   #
   #
@@ -19,7 +19,6 @@ class Location
   
   def initialize(options)
     @location_name = options["location_name"]
-    @business_name = options["business_name"]
     @street = options["street"]
     @city = options["city"]
     @state = options["state"]
