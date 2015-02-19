@@ -2,6 +2,9 @@
 
 <form action = "/new_article">
   
+<!--RIGHT NOW THIS FORM CANNOT HANDLE SPECIAL CHARACTERS LIKE APOSTROPHES -->
+  
+  
   Author: <select name="author" size="1">
        <option value="nil">---</option>
        <% @author_values_array.each do |hash| %>
@@ -32,8 +35,6 @@
      </select><br><br>
      
      
-     
-<!--RIGHT NOW THIS FORM CANNOT HANDLE SPECIAL CHARACTERS LIKE APOSTROPHES -->
    Create new location:<br><br>
    Location name (nickname, for search purposes):<input type ="text" name ="location_name" value ="<%= @location_name %>"><br>
    Business name: <input type ="text" name ="business_name" value ="<%= @business_name %>"><br>
