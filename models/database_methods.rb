@@ -29,6 +29,23 @@ module DatabaseMethods
     #
     #
     # Returns: Array of Hashes
+    ##### NEED TO TEST THIS METHOD ######
+    
+    def find_by_var(table_name, var_name, var_value)
+      if var_value.is_a?(Integer)
+        results = DATABASE.execture("SELECT * FROM #{table_name} WHERE #{var_name} 
+                                  = #{var_value}")
+      elsif 
+        results = DATABASE.execture("SELECT * FROM #{table_name} WHERE #{var_name} 
+                                  = '#{var_value}'")
+      end
+    end
+    
+    #
+    #
+    #
+    #
+    # Returns: Array of Hashes
     
     # CHANGE TO RETURN AN OBJECT, NOT ARRAY   
     def all(table_name)
@@ -64,15 +81,18 @@ module DatabaseMethods
       
     elsif table_name == "location_keys"
       DATABASE.execute("INSERT INTO location_keys (location_name, business_name, 
-                      street, city, state, country) VALUES 
-                      ('#{@location_name}', '#{@business_name}', '#{@street}', 
-                      '#{@city}', '#{@state}', '#{@country}')")
+                      street, city, state, country) VALUES ('#{@location_name}', 
+                      '#{@business_name}', '#{@street}', '#{@city}', '#{@state}', '#{@country}')")
       @id = DATABASE.last_insert_row_id
       
     elsif table_name == "articles"
       DATABASE.execute("INSERT INTO articles (date, author, text, title) VALUES 
                       ('#{@date}', #{@author}, '#{@text}', '#{@title}')")
       @id = DATABASE.last_insert_row_id
+      
+    elsif table_name == "articles_with_locations"
+      DATABASE.execute("INSERT INTO articles_with_locations (article_id, location_id) 
+                      VALUES (#{@article_id}, #{@location_id})")
       
     end
   end

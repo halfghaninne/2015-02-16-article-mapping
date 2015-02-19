@@ -23,12 +23,17 @@
    Choose an existing location: <select name="existing_location_tag" size="1">
        <option value="nil">---</option>
        <% @location_values_array.each do |hash| %>
-       <% if hash["id"]==@location_tag %>
+       <% if hash["id"]==@existing_location_tag %>
        <option value="<%= hash["id"] %>" selected="selected"><%= hash["location_name"]%> <i><%= hash["business_name"]%>, <%= hash["street"].byteslice(0..13)%></i></option>
-       <% end %>
+       <% else %>
        <option value="<%= hash["id"] %>"><%= hash["location_name"]%> <i><%= hash["business_name"]%>, <%= hash["street"].byteslice(0..13)%></i></option>
+       <% end%>
        <% end %>
-   
+     </select><br><br>
+     
+     
+     
+<!--RIGHT NOW THIS FORM CANNOT HANDLE SPECIAL CHARACTERS LIKE APOSTROPHES -->
    Create new location:<br><br>
    Location name (nickname, for search purposes):<input type ="text" name ="location_name" value ="<%= @location_name %>"><br>
    Business name: <input type ="text" name ="business_name" value ="<%= @business_name %>"><br>
