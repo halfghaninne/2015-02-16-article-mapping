@@ -1,16 +1,22 @@
 require 'pry'
 require 'sqlite3'
+require 'active_record'
+require 'geocoder'
 
 require_relative "database_methods"
 
-class Location
+class Location < ActiveRecord::Base
   
   include DatabaseMethods
   
   attr_reader :id
   
-  attr_accessor :location_name, :street, :city, :state, :country
+  attr_accessor :location_name, :street, :city, :state, :country, :address
   
+  geocoded_by :address
+  
+  after_validation :geo_code # :if => :address_changed?
+
   #
   #
   #
@@ -24,20 +30,22 @@ class Location
     @state = options["state"]
     @country = options["country"]
     
-    @address_array = []
+    address_array = []
     
     if @street == nil
-      options.each_value { |value| @address_array << value }
+      options.each_value { |value| address_array << value }
     else
       options.delete("location_name")
-      options.each_value { |value| @address_array << value }
+      options.each_value { |value| address_array << value }
     end
+    
+    @address = address_array.join(", ")
 
   end 
   
-  def address
-    @address_array.join(", ")
-  end
+  # def address
+  #   @address_array.join(", ")
+  # end
   
   # attributes = []
   #
@@ -60,5 +68,3 @@ class Location
   # query_string = query_components_array.join(", ")
   
 end
-
-binding.pry
