@@ -65,7 +65,7 @@ get "/review_draft" do
   @text = params[:article_text]
   
   @location_values_array = Location.all("location_keys")
-  @existing_location_tag = params[:existing_location_tag] #numeric id value for location
+  @existing_location_tag = params[:existing_location_tag].to_i #numeric id value for location
   
   if params[:city] != nil # If there is input in this field, set these params to variables to make a new location
     
@@ -107,8 +107,7 @@ get "/new_article" do
   author_hash = return_array[0]
   @author_name = author_hash["name"]
   
-  ################## ************************************ #####################
-  # if params[:city] != nil
+  if params[:city].length > 1
   
     @location_name = params[:location_name]
     @street = params[:street]
@@ -126,25 +125,25 @@ get "/new_article" do
   
   matched_location.insert("articles_with_locations")
   
-  # end
+  end
   
-  ################## ************************************ #####################
-  
-  # if params[:existing_location_tag] != nil
-  #   @existing_location_tag = params[:existing_location_tag]
-  #   location_info = Location.find_by_id("location_keys", @existing_location_tag)
-  #                   # => Returns Array with one Hash
-  #   @location_name = location_info["location_name"]
-  #   @street = location_info["street"]
-  #   @city = location_info["city"]
-  #   @state = location_info["state"]
-  #   @country = location_info["country"]
-  #
-  #   matched_location = MatchAwL.new("location_id" => location_info["id"], "article_id" => new_entry.id)
-  #
-  #   matched_location.insert("articles_with_locations")
-  #
-  # end
+  if params[:existing_location_tag] != "nil"
+    @existing_location_tag = params[:existing_location_tag].to_i
+    binding.pry
+    found_location = Location.find_by_id("location_keys", @existing_location_tag)
+                    # => Returns Array with one Hash
+    location_info = found_location[0]
+    @location_name = location_info["location_name"]
+    @street = location_info["street"]
+    @city = location_info["city"]
+    @state = location_info["state"]
+    @country = location_info["country"]
+
+    matched_location = MatchAwL.new("location_id" => location_info["id"], "article_id" => new_entry.id)
+
+    matched_location.insert("articles_with_locations")
+
+  end
   
   
   erb :"articles/new_article"

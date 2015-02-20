@@ -74,6 +74,7 @@ module DatabaseMethods
   #
   #
   
+  #### REVISIT - quotes around the strings create issues for NULL values ####
   def insert(table_name)
     if table_name == "authors"
       DATABASE.execute("INSERT INTO authors (name) VALUES ('#{@name}')")
