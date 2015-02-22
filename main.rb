@@ -119,7 +119,7 @@ get "/new_article" do
                                   "street" => @street, "city" => @city, 
                                   "state" => @state, "country" => @country )
   new_location_key.coordinates
-  new_location_key.embed
+  @search_query = new_location_key.embed
   new_location_key.insert("location_keys")
   
   matched_location = MatchAwL.new("location_id" => new_location_key.id, "article_id" => new_entry.id)

@@ -24,7 +24,7 @@ class Location
     @city = options["city"]
     @state = options["state"]
     @country = options["country"]
-    @apikey = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8"
+    @api_key = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8"
     
     address_array = []
     
@@ -40,8 +40,7 @@ class Location
   end 
   
   def embed
-    @query_string = "https://www.google.com/maps/embed/v1/search?key=#{@apikey}&q=#{@address}"
-    puts @query_string                  
+    @query_string = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"                 
   end
   
   def coordinates
