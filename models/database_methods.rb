@@ -82,8 +82,9 @@ module DatabaseMethods
       
     elsif table_name == "location_keys"
       DATABASE.execute("INSERT INTO location_keys (location_name, street, city, 
-                      state, country, address) VALUES ('#{@location_name}', '#{@street}', 
-                      '#{@city}', '#{@state}', '#{@country}', '#{@address})")
+                      state, country, address, latitude, longitude) VALUES ('#{@location_name}', '#{@street}', 
+                      '#{@city}', '#{@state}', '#{@country}', '#{@address}', #{@latitude}, 
+                      #{@longitude})")
       @id = DATABASE.last_insert_row_id
       
     elsif table_name == "articles"

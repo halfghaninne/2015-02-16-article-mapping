@@ -118,18 +118,20 @@ get "/new_article" do
   new_location_key = Location.new( "location_name" => @location_name, 
                                   "street" => @street, "city" => @city, 
                                   "state" => @state, "country" => @country )
-  
+  new_location_key.coordinates
+  new_location_key.embed
   new_location_key.insert("location_keys")
   
   matched_location = MatchAwL.new("location_id" => new_location_key.id, "article_id" => new_entry.id)
   
   matched_location.insert("articles_with_locations")
   
+  binding.pry
   end
   
   if params[:existing_location_tag] != "nil"
     @existing_location_tag = params[:existing_location_tag].to_i
-    binding.pry
+
     found_location = Location.find_by_id("location_keys", @existing_location_tag)
                     # => Returns Array with one Hash
     location_info = found_location[0]

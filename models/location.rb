@@ -1,21 +1,16 @@
 require 'pry'
 require 'sqlite3'
-require 'active_record'
 require 'geocoder'
 
 require_relative "database_methods"
 
-class Location < ActiveRecord::Base
+class Location
   
   include DatabaseMethods
   
   attr_reader :id
   
   attr_accessor :location_name, :street, :city, :state, :country, :address
-  
-  geocoded_by :address
-  
-  after_validation :geo_code # :if => :address_changed?
 
   #
   #
@@ -29,6 +24,7 @@ class Location < ActiveRecord::Base
     @city = options["city"]
     @state = options["state"]
     @country = options["country"]
+    @apikey = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8"
     
     address_array = []
     
@@ -42,6 +38,18 @@ class Location < ActiveRecord::Base
     @address = address_array.join(", ")
 
   end 
+  
+  def embed
+    @query_string = "https://www.google.com/maps/embed/v1/search?key=#{@apikey}&q=#{@address}"
+    puts @query_string                  
+  end
+  
+  def coordinates
+    geocoder_search_result = Geocoder.search(@address)
+        # => Returns an array of results
+    @latitude = geocoder_search_result[0].latitude
+    @longitude = geocoder_search_result[0].longitude
+  end
   
   # def address
   #   @address_array.join(", ")
