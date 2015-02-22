@@ -107,6 +107,11 @@ get "/new_article" do
   author_hash = return_array[0]
   @author_name = author_hash["name"]
   
+  #### ADRESSES ###
+  #################
+  
+  @api_key = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8"               
+  
   if params[:city].length > 1
   
     @location_name = params[:location_name]
@@ -114,19 +119,19 @@ get "/new_article" do
     @city = params[:city]
     @state = params[:state]
     @country = params[:country]
-  
   new_location_key = Location.new( "location_name" => @location_name, 
                                   "street" => @street, "city" => @city, 
                                   "state" => @state, "country" => @country )
   new_location_key.coordinates
-  @search_query = new_location_key.embed
+  
+  @address = new_location_key.address
+
   new_location_key.insert("location_keys")
   
   matched_location = MatchAwL.new("location_id" => new_location_key.id, "article_id" => new_entry.id)
   
   matched_location.insert("articles_with_locations")
-  
-  binding.pry
+
   end
   
   if params[:existing_location_tag] != "nil"
@@ -140,12 +145,15 @@ get "/new_article" do
     @city = location_info["city"]
     @state = location_info["state"]
     @country = location_info["country"]
+    @address = location_info["address"]
 
     matched_location = MatchAwL.new("location_id" => location_info["id"], "article_id" => new_entry.id)
 
     matched_location.insert("articles_with_locations")
 
   end
+  
+@search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
   
   
   erb :"articles/new_article"

@@ -24,11 +24,10 @@ class Location
     @city = options["city"]
     @state = options["state"]
     @country = options["country"]
-    @api_key = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8"
     
     address_array = []
     
-    if @street == nil
+    if @street.length < 1
       options.each_value { |value| address_array << value }
     else
       options.delete("location_name")
@@ -38,10 +37,6 @@ class Location
     @address = address_array.join(", ")
 
   end 
-  
-  def embed
-    @query_string = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"                 
-  end
   
   def coordinates
     geocoder_search_result = Geocoder.search(@address)
