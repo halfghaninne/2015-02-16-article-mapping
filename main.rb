@@ -27,7 +27,7 @@ get "/" do
   @front_page_array = []
 
   x = (n - 1) #index of each item, starting from last (most-recent) item
-  until x == (n - 10) do
+  until x == (n - 11) do
     selected_hash = @article_values_array[x]
       @id = selected_hash["id"].to_i
       @title = selected_hash["title"]
@@ -55,9 +55,34 @@ end
 # end
 
 get "/articles" do
-  @article_id = params[:id]
+  @id = params[:id].to_i
   @title = params[:title]
   @date = params[:date]
+  
+  article_return_array = Article.find_by_id("articles", @id) #Array of one Hash
+  other_info = article_return_array[0]
+  @text = other_info["text"]
+  @author = other_info["author"].to_i
+
+  author_return_array = Author.find_by_id("authors", @author)
+  author_hash = author_return_array[0]
+  @author_name = author_hash["name"]
+  
+  @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
+  
+  location_id_return_array = MatchAwL.find_by_var("articles_with_locations", "article_id", @id)
+  location_hash = location_id_return_array[0]
+  @location_id = location_hash["location_id"]
+  
+  location_info_return_array = Location.find_by_id("location_keys", @location_id)
+  location_info_hash = location_info_return_array[0]
+  @location_name = location_info_hash["location_name"]
+  @address = location_info_hash["address"]
+  
+  @api_key = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8" 
+  @search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
+  
+  binding.pry
 
   erb :"articles/article_template"
 end
@@ -166,6 +191,7 @@ get "/new_article" do
   end
   
 @search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
+#### CONSIDER INSERTING THIS INTO THE DATABASE AS ANOTHER LOCATION FIELD #####
   
   
   erb :"articles/new_article"

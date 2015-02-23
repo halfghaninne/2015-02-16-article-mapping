@@ -33,10 +33,10 @@ module DatabaseMethods
     
     def find_by_var(table_name, var_name, var_value)
       if var_value.is_a?(Integer)
-        results = DATABASE.execture("SELECT * FROM #{table_name} WHERE #{var_name} 
+        results = DATABASE.execute("SELECT * FROM #{table_name} WHERE #{var_name} 
                                   = #{var_value}")
       elsif 
-        results = DATABASE.execture("SELECT * FROM #{table_name} WHERE #{var_name} 
+        results = DATABASE.execute("SELECT * FROM #{table_name} WHERE #{var_name} 
                                   = '#{var_value}'")
       end
     end
