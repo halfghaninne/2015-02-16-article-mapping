@@ -1,17 +1,17 @@
-<!--CONSIDER ADDING A 'ARTICLE HAS BEEN PUBLISHED' MSG HERE TO DIFFERENTIATE THIS AS A PUBLISHING PAGE AND NOT WHAT WOULD BE DIRECTED TO FROM THE MAIN 'FRONT PAGE' -->
+<h3 class="pub_notice">Your article has been published.</h3>
 
-<h3><%= @title %></h3>
+<h2><%= @title %></h2>
 <h4><%= @author_name %></h4>
 
-<h5><b><%= @html_formatted_date %></b></h5>
+<h4 class="date"><b><%= @html_formatted_date %></b></h4>
 
-<%= @formatted_text %>
+<p><%= @formatted_text %></p>
 
-<br><br><br>Locations: <b><%= @location_name %></b><br><br>
+<br><br>Locations: <b><%= @location_name %></b><br><br>
 
   <iframe
     width="450"
     height="337.5"
-    frameborder="0" style="border:0"
+    frameborder="10" style="border:0"
     src="<%= @search_query %>">
   </iframe>

@@ -81,8 +81,6 @@ get "/articles" do
   
   @api_key = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8" 
   @search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
-  
-  binding.pry
 
   erb :"articles/article_template"
 end

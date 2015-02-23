@@ -1,0 +1,56 @@
+* {
+  max-width: 1200px;
+  margin: 8px auto;
+  left-margin: 8px;
+  background-color: #DCD9D8;
+}
+
+
+h1 {
+  color: #1A1514;
+}
+
+.pub_notice {
+  color: #BF0000;
+}
+  
+h2 {
+  color: #1A1514;
+}
+
+h4 {
+  color: #1A1514;
+}
+
+.date {
+  color: #BF0000;
+}
+
+p {
+  color: #1A1514;
+}
+
+.teaser {
+  line-height: 19px;
+}
+
+
+a {
+  color: #1A1514;
+}
+
+iframe {
+  border-color: #CBC5C5;
+}
+
+input {
+  background-color: #FFFFFF;
+}
+
+textarea {
+  background-color: #FFFFFF;
+}
+
+select {
+  background-color: #FFFFFF;
+}

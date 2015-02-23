@@ -2,8 +2,8 @@
 
 <a href="/articles?id=<%= hash["id"] %>&date=<%= hash["date"] %>&title=<%= hash["title"] %>"><big><b><%= hash["title"] %></b></big></a><br>
 
-<b><%= hash["short_date"] %></b>  <%= hash["author_name"]%><br>
-<em><%= hash["text_bite"]%>...</em><br><br>
+<p class="teaser"><b class="date"><%= hash["short_date"] %></b>  <%= hash["author_name"]%><br>
+<em><%= hash["text_bite"]%>...</em></p><br><br>
 <% end %>
 
 

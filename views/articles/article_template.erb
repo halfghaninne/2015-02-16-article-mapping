@@ -1,15 +1,13 @@
-<h3><%= @title %></h3>
-<h5><%= @date %></h5>
-
-<h4><%= @author_name %></h4>
+<h2><%= @title %></h2><br>
+<h4 class = "date"><%= @date %></h4> <h4><%= @author_name %></h4><br>
 
 <p><%= @formatted_text %></p>
 
-<br><br><br>Locations: <b><%= @location_name %></b><br><br>
+<br><br>Locations: <b><%= @location_name %></b><br><br>
 
   <iframe
     width="450"
     height="337.5"
-    frameborder="0" style="border:0"
+    frameborder="15"
     src="<%= @search_query %>">
   </iframe>
