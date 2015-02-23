@@ -15,40 +15,52 @@ require_relative "models/match_article_location.rb"
 #### I THINK IT WOULD BE GOOD HERE TO DEFINE @ VARIABLES FOR ALL ARTICLES ON THE HOMEPAGE IN A MODULE. ####
 
 get "/" do
-  erb :homepage
   
   ##########################################################
   # METHODS FOR BRINGING LATEST ARTICLES TO THE FRONT PAGE #
   ##########################################################
    
-  # @article_values_array = Article.all("articles")
-  #   # => an Array of Hashes
-  # n = @article_values_array.length
-  #
-  # @front_page_array = []
-  #
-  # x == (n - 1)
-  # until x == (n - 10) do
-  #   hash = @article_values_array[x]
-  #     @title = hash["title"]
-  #     @author = hash["author_id"]
-  #       return_array = Author.find_by_id("authors", @author.to_i)
-  #       author_hash = return_array[0]
-  #     @author_name = author_hash["name"]
-  #     @text = hash["text"].byteslice(0..70)
-  #
-  #     @formatting_hash = {"title" => @title, "author_name" => @author_name,
-  #                         "text" => @text}
-  #
-  #     @front_page_array << @formatting_hash
-  #   x -= 1
-  # end
+  @article_values_array = Article.all("articles")
+    # => an Array of Hashes
+  n = @article_values_array.length
+
+  @front_page_array = []
+
+  x = (n - 1) #index of each item, starting from last (most-recent) item
+  until x == (n - 10) do
+    selected_hash = @article_values_array[x]
+      @id = selected_hash["id"].to_i
+      @title = selected_hash["title"]
+      @author = selected_hash["author"].to_i # Integeter
+        return_array = Author.find_by_id("authors", @author) # Array of one Hash
+        @author_hash = return_array[0] #the Hash returned above
+      @author_name = @author_hash["name"]
+      @text_bite = selected_hash["text"].byteslice(0..70)
+      @full_text = selected_hash["text"]
+      @short_date = selected_hash["date"].byteslice(5..9)
+      @date = selected_hash["date"].byteslice(0..15)
+
+      @formatting_hash = {"id" => @id, "title" => @title, "date" => @date, "short_date" => @short_date, "author_name" => @author_name,
+                          "text_bite" => @text_bite}
+
+      @front_page_array << @formatting_hash
+    x -= 1
+  end
   
+  erb :homepage
 end
 
 # get "/login_to_submit" do
 #   erb :login
 # end
+
+get "/articles" do
+  @article_id = params[:id]
+  @title = params[:title]
+  @date = params[:date]
+
+  erb :"articles/article_template"
+end
 
 get "/submit_draft" do
   @author_values_array = Author.all("authors")
