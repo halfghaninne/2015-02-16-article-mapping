@@ -191,6 +191,6 @@ get "/new_article" do
 @search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
 #### CONSIDER INSERTING THIS INTO THE DATABASE AS ANOTHER LOCATION FIELD #####
   
-  
+#consider using same article template erb but with an optional message of publication (similar to Andrew Y's error message on his user page)
   erb :"articles/new_article"
 end

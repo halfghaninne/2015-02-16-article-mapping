@@ -18,7 +18,7 @@ class Author
   #
   
   def initialize(options)
-    @name = options[:name]
+    @name = options["name"]
   end 
   
 end

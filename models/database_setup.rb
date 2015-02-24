@@ -9,11 +9,12 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS location_keys (id INTEGER PRIMARY
                   KEY, location_name TEXT NOT NULL, street TEXT,
                   city TEXT NOT NULL, state TEXT NOT NULL, country TEXT, address TEXT, 
                   latitude FLOAT, longitude FLOAT)") 
-#add in address STRING, lattitude FLOAT, longitude FLOAT fields
-
+                  # consider adding in a google maps url string as a field.
+                  
 DATABASE.execute("CREATE TABLE IF NOT EXISTS articles (id INTEGER PRIMARY KEY, 
                   date DATE, author INTEGER, title TEXT, text TEXT, FOREIGN KEY(author) 
                   REFERENCES authors(id))")
+                  # consider adding in an image field lol
 
 # not associated with an object class 
 DATABASE.execute("CREATE TABLE IF NOT EXISTS articles_with_locations 

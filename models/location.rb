@@ -8,7 +8,7 @@ class Location
   
   include DatabaseMethods
   
-  attr_reader :id
+  attr_reader :id, :latitude, :longitude
   
   attr_accessor :location_name, :street, :city, :state, :country, :address
 
@@ -27,16 +27,39 @@ class Location
     
     address_array = []
     
+    short_options = {"location_name" => @location_name, "street" => @street,
+                    "city" => @city, "state" => @state, "country" => @country}
     if @street.length < 1
-      options.each_value { |value| address_array << value }
+      short_options.each_value { |value| address_array << value }
     else
-      options.delete("location_name")
-      options.each_value { |value| address_array << value }
+      short_options.delete("location_name")
+      short_options.each_value { |value| address_array << value }
     end
-    
     @address = address_array.join(", ")
-
-  end 
+    
+    if is_geocoded? == true
+      @latitude = options["latitude"]
+      @longitude = options["longitude"]
+    else
+      self.coordinates
+    end
+  end
+  
+  #
+  #
+  #
+  #
+  #
+  
+  def is_geocoded?
+    !(@latitude == nil || @longitude == nil)
+  end
+  
+  #
+  #
+  #
+  #
+  #
   
   def coordinates
     geocoder_search_result = Geocoder.search(@address)

@@ -14,13 +14,29 @@ module DatabaseMethods
     #
     #
     #
-    # Returns Array of Hashes
+    # Returns an Author, Location, or Article Object
     
     def find_by_id(table_name, record_id)
       results = DATABASE.execute("SELECT *  FROM #{table_name} WHERE id = 
                                 #{record_id}")
-      # author_hash = results[0]
-      # self.new("id" => author_hash["id"], "name" => author_hash["name"])
+      record_hash = results[0]
+
+      if table_name == "authors"
+        self.new("id" => record_hash["id"], "name" => record_hash["name"])
+        
+      elsif table_name == "location_keys"
+        self.new("id" => record_hash["id"], "location_name" => record_hash["location_name"], 
+        "street" => record_hash["street"], "city" => record_hash["city"], 
+        "state" => record_hash["state"], "country" => record_hash["country"])
+        
+      elsif table_name == "articles"
+          self.new("id" => record_hash["id"], "date" => record_hash["date"], 
+          "author" => record_hash["author"], "title" => record_hash["title"], 
+          "text" => record_hash["text"])
+        
+      # elsif table_name == "articles_with_locations"
+      end
+      
       
     end
     
@@ -28,16 +44,34 @@ module DatabaseMethods
     #
     #
     #
-    # Returns: Array of Hashes
-    ##### NEED TO TEST THIS METHOD ######
+    # Returns an Author, Location, or Article Object
     
     def find_by_var(table_name, var_name, var_value)
+      
       if var_value.is_a?(Integer)
         results = DATABASE.execute("SELECT * FROM #{table_name} WHERE #{var_name} 
                                   = #{var_value}")
+        # => Returns Array of ONE Hash (for now)
+  
       elsif 
         results = DATABASE.execute("SELECT * FROM #{table_name} WHERE #{var_name} 
                                   = '#{var_value}'")
+      end
+      
+      record_hash = results[0]
+      
+      if table_name == "authors"
+        self.new("id" => record_hash["id"], "name" => record_hash["name"])
+        
+      elsif table_name == "location_keys"
+        self.new("id" => record_hash["id"], "location_name" => record_hash["location_name"], 
+        "street" => record_hash["street"], "city" => record_hash["city"], 
+        "state" => record_hash["state"], "country" => record_hash["country"])
+        
+      elsif table_name == "articles"
+          self.new("id" => record_hash["id"], "date" => record_hash["date"], 
+          "author" => record_hash["author"], "title" => record_hash["title"], 
+          "text" => record_hash["text"])
       end
     end
     
@@ -49,7 +83,25 @@ module DatabaseMethods
     
     # CHANGE TO RETURN AN OBJECT, NOT ARRAY   
     def all(table_name)
-      DATABASE.execute("SELECT * FROM #{table_name}")
+      many_results = DATABASE.execute("SELECT * FROM #{table_name}")
+      # => Array of lots of hashes.
+      
+      many_results.each do
+        if table_name == "authors"
+          self.new("id" => record_hash["id"], "name" => record_hash["name"])
+          
+        elsif table_name == "location_keys"
+          self.new("id" => record_hash["id"], "location_name" => record_hash["location_name"], 
+          "street" => record_hash["street"], "city" => record_hash["city"], 
+          "state" => record_hash["state"], "country" => record_hash["country"])
+          
+        elsif table_name == "articles"
+          self.new("id" => record_hash["id"], "date" => record_hash["date"], 
+          "author" => record_hash["author"], "title" => record_hash["title"], 
+          "text" => record_hash["text"])
+        end
+      end
+      
     end
     
     #
@@ -74,7 +126,6 @@ module DatabaseMethods
   #
   #
   
-  #### REVISIT - quotes around the strings create issues for NULL values ####
   def insert(table_name)
     if table_name == "authors"
       DATABASE.execute("INSERT INTO authors (name) VALUES ('#{@name}')")
@@ -128,21 +179,15 @@ module DatabaseMethods
   
     DATABASE.execute("UPDATE #{table_name} SET #{query_string} WHERE id =                             #{id}")
   end
-  
+
+  # def list_attributes
+  #   attributes = []
+  #   instance_variables.each do |i|
+  #     attributes << i.to_s.delete("@")
+  #   end
   #
-  #
-  #
-  #
-  #
-  
-  def list_attributes
-    attributes = []
-    instance_variables.each do |i|
-      attributes << i.to_s.delete("@")
-    end
-  
-    attribute_string = attributes.join("\n")
-    puts "#{attribute_string}"
-  end
+  #   attribute_string = attributes.join("\n")
+  #   puts "#{attribute_string}"
+  # end
   
 end
