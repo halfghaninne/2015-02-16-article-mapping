@@ -114,7 +114,6 @@ get "/review_draft" do
 
   erb :"articles/review_draft"
 
-  # EXTENSION: FIND OUT HOW TO INSERT UNIQUE IDENTIFIER INSTEAD
 end
 
 get "/new_article" do
@@ -142,8 +141,9 @@ get "/new_article" do
   author_hash = return_array[0]
   @author_name = author_hash["name"]
   
-  #### ADRESSES ###
-  #################
+  ##########################################################
+  #      METHODS FOR INSERTING OR ACCESSING ADDRESSES      #
+  ##########################################################
   
   @api_key = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8"               
   
