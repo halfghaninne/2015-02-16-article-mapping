@@ -83,25 +83,31 @@ module DatabaseMethods
     
     # CHANGE TO RETURN AN OBJECT, NOT ARRAY   
     def all(table_name)
+      
       many_results = DATABASE.execute("SELECT * FROM #{table_name}")
       # => Array of lots of hashes.
       
-      many_results.each do
+      objects_array = []
+      
+      many_results.each do |record_hash|
         if table_name == "authors"
-          self.new("id" => record_hash["id"], "name" => record_hash["name"])
+          obj = self.new("id" => record_hash["id"], "name" => record_hash["name"])
           
         elsif table_name == "location_keys"
-          self.new("id" => record_hash["id"], "location_name" => record_hash["location_name"], 
+          obj = self.new("id" => record_hash["id"], "location_name" => record_hash["location_name"], 
           "street" => record_hash["street"], "city" => record_hash["city"], 
           "state" => record_hash["state"], "country" => record_hash["country"])
           
         elsif table_name == "articles"
-          self.new("id" => record_hash["id"], "date" => record_hash["date"], 
-          "author" => record_hash["author"], "title" => record_hash["title"], 
-          "text" => record_hash["text"])
+          obj = self.new(record_hash)
+          # this could be shortened just to say self.new(record_hash)
         end
+        
+        objects_array = [] << obj
+        
       end
-      
+    
+      binding.pry
     end
     
     #

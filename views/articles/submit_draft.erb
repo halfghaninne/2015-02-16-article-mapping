@@ -6,8 +6,8 @@
   
   Author: <select name="author" size="1">
        <option value="nil">---</option>
-       <% @author_values_array.each do |hash| %>
-       <option value="<%= hash["id"] %>"><%= hash["name"]%></option>
+       <% @author_objects_array.each do |object| %>
+       <option value="<%= object.id %>"><%= object.name %></option>
        <% end %>
   </select><br><br>
      
@@ -20,8 +20,8 @@
    
    Choose an existing location: <select name="existing_location_tag" size="1">
        <option value="nil">---</option>
-       <% @location_values_array.each do |hash| %>
-       <option value="<%= hash["id"] %>"><%= hash["location_name"]%> <i><%= hash["street"].byteslice(0..15)%></i></option>
+       <% @location_objects_array.each do |object| %>
+       <option value="<%= object.id %>"><%= object.location_name %> <i><%= object.street.byteslice(0..15)%></i></option>
        <% end %>
   </select><br><br>
    

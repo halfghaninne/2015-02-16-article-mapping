@@ -48,7 +48,6 @@ class Article
   #   results.each do |r|
   #     results_as_objects << self.new(r)
   #   end
-  
-  end
+
   
 end
