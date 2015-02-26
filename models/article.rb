@@ -18,8 +18,10 @@ class Article
   #
   
   def initialize(options)
+    @id = options["id"]
+    # uncomfortable with this but try it for now and ask Sumeet later
     @date = options["date"]
-    @author = options["author"].to_i
+    @author = options["author_id"].to_i
     @title = options["title"]
     @text = options["text"]
   end 

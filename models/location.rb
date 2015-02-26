@@ -19,6 +19,8 @@ class Location
   #
   
   def initialize(options)
+    @id = options["id"]
+    # AHHHHHHHHHHHHHHHHHH
     @location_name = options["location_name"]
     @street = options["street"]
     @city = options["city"]

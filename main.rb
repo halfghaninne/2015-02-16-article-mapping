@@ -22,7 +22,6 @@ get "/" do
    
   @article_objects_array = Article.all("articles")
     # => an Array of Objects
-    #### IS NOT RETURNING OBJECTS; STILL HASHES
 
   n = @article_objects_array.length
 
@@ -30,26 +29,31 @@ get "/" do
 
   x = (n - 1) #index of each item, starting from last (most-recent) item
   until x == (n - 11) do
-    selected_object = @article_objects_array[x] #each x is an Object
-############# Do I need to be writing all of this code? #######################
-      @id = selected_object.id
-      @title = selected_object.title
-      @author = selected_object.author # Integeter
-        return_array = Author.find_by_id("authors", @author) # Array of one Objet
-        @author_object = return_array[0] #the Object returned above
-      @author_name = @author_object.name
-      @full_text = selected_object.text
-      @text_bite = @full_text.byteslice(0..70)
-      #check and make sure you can call two methods on one object at once:
-      @short_date = selected_object.date.byteslice(5..9)
-      @date = selected_object.date.byteslice(0..15)
+    
+    if @article_objects_array[x] != nil
+      selected_object = @article_objects_array[x] #each x is an Object
+  ############# Do I need to be writing all of this code? #######################
+      
+        @id = selected_object.id
+        @title = selected_object.title
+        @author = selected_object.author # Integer
+          author_object = Author.find_by_id("authors", @author) # one Object
+        @author_name = author_object.name
+        @full_text = selected_object.text
+        @text_bite = @full_text.byteslice(0..70)
+        #check and make sure you can call two methods on one object at once:
+        @short_date = selected_object.date.byteslice(5..9)
+        @date = selected_object.date.byteslice(0..15)
 
-      @formatting_hash = {"id" => @id, "title" => @title, "date" => @date, "short_date" => @short_date, "author_name" => @author_name,
-                          "text_bite" => @text_bite}
+        @formatting_hash = {"id" => @id, "title" => @title, "date" => @date, "short_date" => @short_date, "author_name" => @author_name,
+                            "text_bite" => @text_bite}
 
-      @front_page_array << @formatting_hash
-    x -= 1
-  end
+        @front_page_array << @formatting_hash
+      x -= 1
+    else
+      x -= 1
+    end # if else loop
+  end #until loop
   
   erb :homepage
 end
@@ -59,26 +63,22 @@ get "/articles" do
   @title = params[:title]
   @date = params[:date]
   
-  article_return_array = Article.find_by_id("articles", @id) #Array of one Obj
-  article_object = article_return_array[0] #the one Object returned about
+  article_object = Article.find_by_id("articles", @id) #one Article Obj
   @text = article_object.text
   @author = article_object.author
 
-  author_return_array = Author.find_by_id("authors", @author) #Array of one Obj
-  author_object = author_return_array[0]
+  author_object = Author.find_by_id("authors", @author) #one Author Obj
   @author_name = author_object.name
   
   @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
   
 ## REVISIT THIS RIGHT AWAY; MAKE SURE METHOD RETURNS OBJ FOR MATCH AWL CLASS ##
 ###############################################################################
-  location_id_return_array = MatchAwL.find_by_var("articles_with_locations", "article_id", @id)
-  location_hash = location_id_return_array[0]
-  @location_id = location_hash["location_id"]
+  location_id_info_object = MatchAwL.find_by_var("articles_with_locations", "article_id", @id)
+  @location_id = location_id_info_object.location_id
 ###############################################################################
   
-  location_info_return_array = Location.find_by_id("location_keys", @location_id)
-  location_object = location_info_return_array[0]
+  location_object = Location.find_by_id("location_keys", @location_id)
   @location_name = location_object.location_name
   @address = location_object.address
   
@@ -89,9 +89,9 @@ get "/articles" do
 end
 
 get "/submit_draft" do
-  @author_objects_array = Author.all("authors") #Array of objects
+  @author_objects_array = Author.all("authors") #Array of Author Objects
   
-  @location_objects_array = Location.all("location_keys") #Array of objects
+  @location_objects_array = Location.all("location_keys") #Array of Location Objects
 
   erb :"articles/submit_draft"
 end
@@ -99,6 +99,7 @@ end
 get "/review_draft" do
   @author_objects_array = Author.all("authors")
   @author = params[:author].to_i
+    
   @title = params[:title]
   @text = params[:article_text]
   
@@ -114,7 +115,7 @@ get "/review_draft" do
     @country = params[:country]
     
   end
-
+  
   erb :"articles/review_draft"
 
 end
@@ -124,7 +125,7 @@ get "/new_article" do
   @author = params[:author]
   @title = params[:title]
   @text = params[:article_text]
-  
+    
   @sql_formatted_date = @date.byteslice(0..9)
   @sql_formatted_time = @date.byteslice(11..18)
   
@@ -140,8 +141,7 @@ get "/new_article" do
   @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
   # RIGHT NOW THIS IS PUTTING FOUR <br> TAGS BETWEEN PARAGRAPHS. UGH.
   
-  return_array = Author.find_by_id("authors", @author.to_i) #Array of Objects
-  author_object = return_array[0]
+  author_object = Author.find_by_id("authors", @author.to_i) #one Author Object
   @author_name = author_object.name
   
   ##########################################################
@@ -175,9 +175,8 @@ get "/new_article" do
   if params[:existing_location_tag] != "nil"
     @existing_location_tag = params[:existing_location_tag].to_i
 
-    found_location = Location.find_by_id("location_keys", @existing_location_tag)
-                    # => Returns Array with one Object
-    location_object = found_location[0]
+    location_object = Location.find_by_id("location_keys", @existing_location_tag)
+                    # => Returns one Location Object
     @location_name = location_object.location_name
     @street = location_object.street
     @city = location_object.city

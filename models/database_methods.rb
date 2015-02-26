@@ -19,24 +19,29 @@ module DatabaseMethods
     def find_by_id(table_name, record_id)
       results = DATABASE.execute("SELECT *  FROM #{table_name} WHERE id = 
                                 #{record_id}")
-      record_hash = results[0]
+                                
+      if results != nil 
+        record_hash = results[0]
 
-      if table_name == "authors"
-        self.new("id" => record_hash["id"], "name" => record_hash["name"])
+        if table_name == "authors"
+          self.new("id" => record_hash["id"], "name" => record_hash["name"])
         
-      elsif table_name == "location_keys"
-        self.new("id" => record_hash["id"], "location_name" => record_hash["location_name"], 
-        "street" => record_hash["street"], "city" => record_hash["city"], 
-        "state" => record_hash["state"], "country" => record_hash["country"])
+        elsif table_name == "location_keys"
+          self.new("id" => record_hash["id"], "location_name" => record_hash["location_name"], 
+          "street" => record_hash["street"], "city" => record_hash["city"], 
+          "state" => record_hash["state"], "country" => record_hash["country"])
         
-      elsif table_name == "articles"
-          self.new("id" => record_hash["id"], "date" => record_hash["date"], 
-          "author" => record_hash["author"], "title" => record_hash["title"], 
-          "text" => record_hash["text"])
+        elsif table_name == "articles"
+            self.new("id" => record_hash["id"], "date" => record_hash["date"], 
+            "author" => record_hash["author"], "title" => record_hash["title"], 
+            "text" => record_hash["text"])
         
-      # elsif table_name == "articles_with_locations"
-      end
+        # elsif table_name == "articles_with_locations"
+        end #if loop
       
+      else
+        nil
+      end #if else loop
       
     end
     
@@ -56,7 +61,7 @@ module DatabaseMethods
       elsif 
         results = DATABASE.execute("SELECT * FROM #{table_name} WHERE #{var_name} 
                                   = '#{var_value}'")
-      end
+      end #if loop
       
       record_hash = results[0]
       
@@ -72,8 +77,11 @@ module DatabaseMethods
           self.new("id" => record_hash["id"], "date" => record_hash["date"], 
           "author" => record_hash["author"], "title" => record_hash["title"], 
           "text" => record_hash["text"])
-      end
-    end
+          
+      elsif table_name == "articles_with_locations"
+          self.new(record_hash)
+      end #if loop
+    end #method
     
     #
     #
@@ -100,15 +108,16 @@ module DatabaseMethods
           
         elsif table_name == "articles"
           obj = self.new(record_hash)
-          # this could be shortened just to say self.new(record_hash)
-        end
+          #obj = self.new(record_hash) might actually cause problems with id overwrite but for now, just go with it
+        end # if loop
         
-        objects_array = [] << obj
-        
-      end
-    
-      binding.pry
-    end
+        objects_array << obj
+  
+      end # each do loop
+      
+      objects_array
+
+    end # method
     
     #
     #

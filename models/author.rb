@@ -18,6 +18,8 @@ class Author
   #
   
   def initialize(options)
+    @id = options["id"]
+    #AHHHHHHHHHHH
     @name = options["name"]
   end 
   
