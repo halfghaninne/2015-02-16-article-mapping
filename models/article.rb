@@ -19,12 +19,26 @@ class Article
   
   def initialize(options)
     @id = options["id"]
-    # uncomfortable with this but try it for now and ask Sumeet later
     @date = options["date"]
-    @author = options["author_id"].to_i
+    @author = options["author"].to_i
     @title = options["title"]
     @text = options["text"]
   end 
+  
+  def self.get_ten
+    articles_hashes = DATABASE.execute("SELECT * FROM articles ORDER BY id DESC LIMIT 10")
+
+    articles_array = []
+    
+    articles_hashes.each do |hash|
+      obj = self.new(hash)
+      articles_array << obj
+    end # each loop
+    
+    articles_array 
+    
+  end #method
+  
   
   # def fetch_by(options)
   #   v = []

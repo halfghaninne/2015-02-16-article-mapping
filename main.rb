@@ -20,39 +20,31 @@ get "/" do
   # METHODS FOR BRINGING LATEST ARTICLES TO THE FRONT PAGE #
   ##########################################################
    
-  @article_objects_array = Article.all("articles")
+  @article_objects_array = Article.get_ten
     # => an Array of Objects
-
-  n = @article_objects_array.length
-
+    
   @front_page_array = []
 
-  x = (n - 1) #index of each item, starting from last (most-recent) item
-  until x == (n - 11) do
-    
-    if @article_objects_array[x] != nil
-      selected_object = @article_objects_array[x] #each x is an Object
-  ############# Do I need to be writing all of this code? #######################
-      
-        @id = selected_object.id
-        @title = selected_object.title
-        @author = selected_object.author # Integer
-          author_object = Author.find_by_id("authors", @author) # one Object
-        @author_name = author_object.name
-        @full_text = selected_object.text
-        @text_bite = @full_text.byteslice(0..70)
-        #check and make sure you can call two methods on one object at once:
-        @short_date = selected_object.date.byteslice(5..9)
-        @date = selected_object.date.byteslice(0..15)
+  @article_objects_array.each do |selected_object|
+      @id = selected_object.id
+      @title = selected_object.title
+      @author = selected_object.author # Integer
+        author_object = Author.find_by_id("authors", @author) # one Object
+      @author_name = author_object.name
+      @full_text = selected_object.text
+      @text_bite = @full_text.byteslice(0..70)
+      #check and make sure you can call two methods on one object at once:
+      @short_date = selected_object.date.byteslice(5..9)
+      @date = selected_object.date.byteslice(0..15)
 
-        @formatting_hash = {"id" => @id, "title" => @title, "date" => @date, "short_date" => @short_date, "author_name" => @author_name,
-                            "text_bite" => @text_bite}
+      @formatting_hash = {"id" => @id, 
+                          "title" => @title, 
+                          "date" => @date, 
+                          "short_date" => @short_date, 
+                          "author_name" => @author_name,
+                          "text_bite" => @text_bite}
 
-        @front_page_array << @formatting_hash
-      x -= 1
-    else
-      x -= 1
-    end # if else loop
+      @front_page_array << @formatting_hash
   end #until loop
   
   erb :homepage

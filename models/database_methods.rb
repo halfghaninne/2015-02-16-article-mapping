@@ -19,8 +19,8 @@ module DatabaseMethods
     def find_by_id(table_name, record_id)
       results = DATABASE.execute("SELECT *  FROM #{table_name} WHERE id = 
                                 #{record_id}")
-                                
-      if results != nil 
+
+      if results != []
         record_hash = results[0]
 
         if table_name == "authors"
@@ -87,9 +87,7 @@ module DatabaseMethods
     #
     #
     #
-    # Returns: Array of Hashes
-    
-    # CHANGE TO RETURN AN OBJECT, NOT ARRAY   
+    # Returns: Array of Objects  
     def all(table_name)
       
       many_results = DATABASE.execute("SELECT * FROM #{table_name}")
