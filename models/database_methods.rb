@@ -106,7 +106,6 @@ module DatabaseMethods
           
         elsif table_name == "articles"
           obj = self.new(record_hash)
-          #obj = self.new(record_hash) might actually cause problems with id overwrite but for now, just go with it
         end # if loop
         
         objects_array << obj
