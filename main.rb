@@ -153,57 +153,59 @@ get "/new_article" do
   
   
   
-  ##########################################################
-  #      METHODS FOR INSERTING OR ACCESSING ADDRESSES      #
-  ##########################################################
+##########################################################
+#      METHODS FOR INSERTING OR ACCESSING ADDRESSES      #
+##########################################################
   
   @api_key = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8"               
   
-  if params[:city].length > 1
+    if params[:city].length > 1
   
-    @location_name = params[:location_name]
-    @street = params[:street]
-    @city = params[:city]
-    @state = params[:state]
-    @country = params[:country]
-  new_location_key = Location.new( "location_name" => @location_name, 
-                                  "street" => @street, "city" => @city, 
-                                  "state" => @state, "country" => @country )
-  new_location_key.coordinates
+      @location_name = params[:location_name]
+      @street = params[:street]
+      @city = params[:city]
+      @state = params[:state]
+      @country = params[:country]
+    new_location_key = Location.new( "location_name" => @location_name, 
+                                    "street" => @street, "city" => @city, 
+                                    "state" => @state, "country" => @country )
+    new_location_key.coordinates
   
-  @address = new_location_key.address
+    @address = new_location_key.address
 
-  new_location_key.insert("location_keys")
+    new_location_key.insert("location_keys")
   
-  matched_location = MatchAwL.new("location_id" => new_location_key.id, "article_id" => new_entry.id)
+    matched_location = MatchAwL.new("location_id" => new_location_key.id, "article_id" => new_entry.id)
   
-  matched_location.insert("articles_with_locations")
-
-  end
-  
-  if params[:existing_location_tag] != "nil"
-    @existing_location_tag = params[:existing_location_tag].to_i
-
-    location_object = Location.find_by_var("location_keys", "id", @existing_location_tag)
-                    # => Returns one Location Object
-    @location_name = location_object.location_name
-    @street = location_object.street
-    @city = location_object.city
-    @state = location_object.state
-    @country = location_object.country
-    @address = location_object.address
-
-    matched_location = MatchAwL.new("location_id" => location_object.id, "article_id" => new_entry.id)
-
     matched_location.insert("articles_with_locations")
 
-  end
+    end #if loop
+  
+    if params[:existing_location_tag] != "nil"
+      @existing_location_tag = params[:existing_location_tag].to_i
+
+      location_object = Location.find_by_var("location_keys", "id", @existing_location_tag)
+                      # => Returns one Location Object
+      @location_name = location_object.location_name
+      @street = location_object.street
+      @city = location_object.city
+      @state = location_object.state
+      @country = location_object.country
+      @address = location_object.address
+
+      matched_location = MatchAwL.new("location_id" => location_object.id, "article_id" => new_entry.id)
+
+      matched_location.insert("articles_with_locations")
+
+    end #if loop
   
   @search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
   #### CONSIDER INSERTING THIS INTO THE DATABASE AS ANOTHER LOCATION FIELD #####
   
   #consider using same article template erb but with an optional message of
   #publication (similar to Andrew Y's error message on his user page)
+  
+##########################################################
   
   erb :"articles/new_article"
   
