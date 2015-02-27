@@ -12,13 +12,11 @@ require_relative "models/article.rb"
 require_relative "models/location.rb"
 require_relative "models/match_article_location.rb"
 
-#### I THINK IT WOULD BE GOOD HERE TO DEFINE @ VARIABLES FOR ALL ARTICLES ON THE HOMEPAGE IN A MODULE. ####
-
 get "/" do
   
-  ##########################################################
-  # METHODS FOR BRINGING LATEST ARTICLES TO THE FRONT PAGE #
-  ##########################################################
+##########################################################
+# METHODS FOR BRINGING LATEST ARTICLES TO THE FRONT PAGE #
+##########################################################
    
   @article_objects_array = Article.get_ten
     # => an Array of Objects
@@ -28,12 +26,15 @@ get "/" do
   @article_objects_array.each do |selected_object|
       @id = selected_object.id
       @title = selected_object.title
-      @author = selected_object.author # Integer
-        author_object = Author.find_by_var("authors", "id", @author) # one Obj
+      @author = selected_object.author 
+        # => Integer
+        
+        author_object = Author.find_by_var("authors", "id", @author) 
+          # => one Object
+          
       @author_name = author_object.name
       @full_text = selected_object.text
       @text_bite = @full_text.byteslice(0..70)
-      #check and make sure you can call two methods on one object at once:
       @short_date = selected_object.date.byteslice(5..9)
       @date = selected_object.date.byteslice(0..15)
 
@@ -45,6 +46,7 @@ get "/" do
                           "text_bite" => @text_bite}
 
       @front_page_array << @formatting_hash
+      
   end #until loop
   
   erb :homepage
@@ -54,25 +56,32 @@ get "/articles" do
   @id = params[:id].to_i
   @title = params[:title]
   @date = params[:date]
-  
-  article_object = Article.find_by_var("articles", "id", @id) #one Article Obj
   @text = article_object.text
-  @author = article_object.author
-
-  author_object = Author.find_by_var("authors", "id", @author) #one Author Obj
+  
+#######################
+# MOVE INTO A METHOD? #
+#######################
+    # Returns author name for this Object, using its @id
+    article_object = Article.find_by_var("articles", "id", @id) 
+      # => one Article Object
+    @author = article_object.author
+    author_object = Author.find_by_var("authors", "id", @author) 
+      # => one Author Obj
   @author_name = author_object.name
+#######################
   
   @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
   
-## REVISIT THIS RIGHT AWAY; MAKE SURE METHOD RETURNS OBJ FOR MATCH AWL CLASS ##
-###############################################################################
-  location_id_info_object = MatchAwL.find_by_var("articles_with_locations", "article_id", @id)
-  @location_id = location_id_info_object.location_id
-###############################################################################
-  
-  location_object = Location.find_by_var("location_keys", "id", @location_id)
+#######################
+# MOVE INTO A METHOD? #
+#######################
+    # Returns associated location name and address for Object, using its @id
+    location_id_info_object = MatchAwL.find_by_var("articles_with_locations", "article_id", @id)
+    @location_id = location_id_info_object.location_id
+    location_object = Location.find_by_var("location_keys", "id", @location_id)
   @location_name = location_object.location_name
   @address = location_object.address
+#######################
   
   @api_key = "AIzaSyABlSFznPfoZu61HT_6w3YwNdGkY0mx5Z8" 
   @search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
@@ -81,24 +90,26 @@ get "/articles" do
 end
 
 get "/submit_draft" do
-  @author_objects_array = Author.all("authors") #Array of Author Objects
-  
-  @location_objects_array = Location.all("location_keys") #Array of Location Objects
+  @author_objects_array = Author.all("authors") 
+    # => Array of Author Objects
+  @location_objects_array = Location.all("location_keys") 
+    # => Array of Location Objects
 
   erb :"articles/submit_draft"
 end
 
 get "/review_draft" do
   @author_objects_array = Author.all("authors")
+  @location_objects_array = Location.all("location_keys")
+  
   @author = params[:author].to_i
-    
   @title = params[:title]
   @text = params[:article_text]
+  @existing_location_tag = params[:existing_location_tag].to_i 
+    # => Integer id value for location
   
-  @location_objects_array = Location.all("location_keys")
-  @existing_location_tag = params[:existing_location_tag].to_i #numeric id value for location
-  
-  if params[:city] != nil # If there is input in this field, set these params to variables to make a new location
+  # If city field has input, set params to variables to make a new location
+  if params[:city] != nil 
     
     @location_name = params[:location_name]
     @street = params[:street]
@@ -106,7 +117,7 @@ get "/review_draft" do
     @state = params[:state]
     @country = params[:country]
     
-  end
+  end #if loop
   
   erb :"articles/review_draft"
 
@@ -117,25 +128,30 @@ get "/new_article" do
   @author = params[:author].to_i
   @title = params[:title]
   @text = params[:article_text]
+  @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
     
+#######################
+# MOVE INTO A METHOD? #
+#######################  
   @sql_formatted_date = @date.byteslice(0..9)
   @sql_formatted_time = @date.byteslice(11..18)
   
   @sql_date_entry = @sql_formatted_date + " " + @sql_formatted_time
   
   @html_formatted_date = @sql_formatted_date + " " + @sql_formatted_time.byteslice(0..4)
+#######################
   
-  binding.pry
   new_entry = Article.new("date" => @sql_date_entry, "author" => @author, "title" => @title, 
                           "text" => @text)
 
   new_entry.insert("articles")
-  
-  @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
-  # RIGHT NOW THIS IS PUTTING FOUR <br> TAGS BETWEEN PARAGRAPHS. UGH.
+
   
   author_object = Author.find_by_var("authors", "id", @author) #one Author Obj
   @author_name = author_object.name
+  
+  
+  
   
   ##########################################################
   #      METHODS FOR INSERTING OR ACCESSING ADDRESSES      #
@@ -183,9 +199,12 @@ get "/new_article" do
 
   end
   
-@search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
-#### CONSIDER INSERTING THIS INTO THE DATABASE AS ANOTHER LOCATION FIELD #####
+  @search_query = "https://www.google.com/maps/embed/v1/search?key=#{@api_key}&q=#{@address}"  
+  #### CONSIDER INSERTING THIS INTO THE DATABASE AS ANOTHER LOCATION FIELD #####
   
-#consider using same article template erb but with an optional message of publication (similar to Andrew Y's error message on his user page)
+  #consider using same article template erb but with an optional message of
+  #publication (similar to Andrew Y's error message on his user page)
+  
   erb :"articles/new_article"
-end
+  
+end #route handler
