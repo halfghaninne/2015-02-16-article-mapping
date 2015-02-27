@@ -11,16 +11,23 @@ class Author
   
   attr_accessor :name
   
+  # Public: new
+  # Creates a new Author Object with the given attributes.
   #
+  # Parameters:
+  # + options   :  Hash
+  #   + id      : Integer
+  #   + name    : String
   #
+  # Returns:
+  # Object
   #
-  #
-  #
+  # State Changes:
+  # None.
   
   def initialize(options)
     @id = options["id"]
-    #AHHHHHHHHHHH
     @name = options["name"]
   end 
   
-end
+end #class

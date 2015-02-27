@@ -11,11 +11,22 @@ class Article
   
   attr_accessor :date, :author, :text, :title
   
+  # Public: new
+  # Creates a new Author Object with the given attributes.
   #
+  # Parameters:
+  # + options   :  Hash
+  #   + id      :  Integer
+  #   + date    :  String
+  #   + author  :  Integer
+  #   + title   :  String
+  #   + text    :  String
   #
+  # Returns:
+  # Object.
   #
-  #
-  #
+  # State Changes:
+  # None.
   
   def initialize(options)
     @id = options["id"]
@@ -24,6 +35,18 @@ class Article
     @title = options["title"]
     @text = options["text"]
   end 
+  
+  # Private: .get_ten
+  # Retrieves the last ten items (Objects) from the articles database.
+  #
+  # Parameters:
+  # None.
+  #
+  # Returns:
+  # Array of Article Objects.
+  #
+  # State Changes:
+  # None.
   
   def self.get_ten
     articles_hashes = DATABASE.execute("SELECT * FROM articles ORDER BY id DESC LIMIT 10")
@@ -38,8 +61,14 @@ class Article
     articles_array 
     
   end #method
-  
-  
+
+end #class
+
+############################################################
+#     Skeletons of unused methods for later purposes       #
+#   needs to be moved up into the above Class to be used   #
+############################################################
+
   # def fetch_by(options)
   #   v = []
   #   k = []
@@ -64,6 +93,3 @@ class Article
   #   results.each do |r|
   #     results_as_objects << self.new(r)
   #   end
-
-  
-end

@@ -12,11 +12,25 @@ class Location
   
   attr_accessor :location_name, :street, :city, :state, :country, :address
 
+  # Public: new 
+  # Creates new Location Object with the given attributes
   #
+  # Parameters:
+  # + options   :  Hash
+  #   + id            : Integer
+  #   + location_name : String
+  #   + street        : String
+  #   + city          : String
+  #   + state         : String
+  #   + country       : String
+  #  (+ longitude     : Float)
+  #  (+ latitude      : Float)
   #
+  # Returns: 
+  # Object / Instance containing the parameters
   #
-  #
-  #
+  # State Changes:
+  # None.
   
   def initialize(options)
     @id = options["id"]
@@ -28,14 +42,20 @@ class Location
     
     address_array = []
     
-    short_options = {"location_name" => @location_name, "street" => @street,
-                    "city" => @city, "state" => @state, "country" => @country}
+    short_options = {"location_name" => @location_name, 
+                      "street" => @street,
+                      "city" => @city, 
+                      "state" => @state, 
+                      "country" => @country}
+                      
+    #this loop checks to see if information for a new location has been entered      into the form. if it has, it enters that information into an array for an       address string (@address) that will be passed to Google as a search query
     if @street.length < 1
       short_options.each_value { |value| address_array << value }
     else
       short_options.delete("location_name")
       short_options.each_value { |value| address_array << value }
-    end
+    end #if loop
+    
     @address = address_array.join(", ")
     
     if is_geocoded? == true
@@ -43,36 +63,59 @@ class Location
       @longitude = options["longitude"]
     else
       self.coordinates
-    end
-  end
+    end #if loop
+    
+  end #method
   
+  # Private: is_geocoded?
+  # Checks to see if the Object/record has values for attributes/fields
+  # @longitude and @latitude.
   #
+  # Parameters:
+  # None.
   #
+  # Returns: 
+  # Boolean true or false - whether the object has values for @longitude and
+  # @latitude
   #
-  #
-  #
+  # State Changes:
+  # None.
   
   def is_geocoded?
     !(@latitude == nil || @longitude == nil)
-  end
+  end 
   
+  # Private: coordinates
+  # Sets two attributes for the Object - @latitude and @longitude.
+  # 
+  # Parameters:
+  # None.
   #
+  # Returns: 
+  # Float - @longitude value
+  # Float - @latitude value
   #
-  #
-  #
-  #
+  # State Changes:
+  # Yes - @latitude and @longitude.
   
   def coordinates
     geocoder_search_result = Geocoder.search(@address)
         # => Returns an array of results
     @latitude = geocoder_search_result[0].latitude
     @longitude = geocoder_search_result[0].longitude
-  end
-  
+  end 
+   
+end #class
+
+############################################################
+#     Skeletons of unused methods for later purposes       #
+#   needs to be moved up into the above Class to be used   #
+############################################################
+
   # def address
   #   @address_array.join(", ")
   # end
-  
+
   # attributes = []
   #
   # instance_variables.each do |i|
@@ -92,5 +135,3 @@ class Location
   # end
   #
   # query_string = query_components_array.join(", ")
-  
-end
