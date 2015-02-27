@@ -29,7 +29,7 @@ get "/" do
       @id = selected_object.id
       @title = selected_object.title
       @author = selected_object.author # Integer
-        author_object = Author.find_by_id("authors", @author) # one Object
+        author_object = Author.find_by_var("authors", "id", @author) # one Obj
       @author_name = author_object.name
       @full_text = selected_object.text
       @text_bite = @full_text.byteslice(0..70)
@@ -55,11 +55,11 @@ get "/articles" do
   @title = params[:title]
   @date = params[:date]
   
-  article_object = Article.find_by_id("articles", @id) #one Article Obj
+  article_object = Article.find_by_var("articles", "id", @id) #one Article Obj
   @text = article_object.text
   @author = article_object.author
 
-  author_object = Author.find_by_id("authors", @author) #one Author Obj
+  author_object = Author.find_by_var("authors", "id", @author) #one Author Obj
   @author_name = author_object.name
   
   @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
@@ -70,7 +70,7 @@ get "/articles" do
   @location_id = location_id_info_object.location_id
 ###############################################################################
   
-  location_object = Location.find_by_id("location_keys", @location_id)
+  location_object = Location.find_by_var("location_keys", "id", @location_id)
   @location_name = location_object.location_name
   @address = location_object.address
   
@@ -114,7 +114,7 @@ end
 
 get "/new_article" do
   @date = params[:date]
-  @author = params[:author]
+  @author = params[:author].to_i
   @title = params[:title]
   @text = params[:article_text]
     
@@ -125,7 +125,8 @@ get "/new_article" do
   
   @html_formatted_date = @sql_formatted_date + " " + @sql_formatted_time.byteslice(0..4)
   
-  new_entry = Article.new("date" => @sql_date_entry, "author_id" => @author, "title" => @title, 
+  binding.pry
+  new_entry = Article.new("date" => @sql_date_entry, "author" => @author, "title" => @title, 
                           "text" => @text)
 
   new_entry.insert("articles")
@@ -133,7 +134,7 @@ get "/new_article" do
   @formatted_text = @text.gsub(/[\r\n\r\n\r\n\r\n]/, "<br>")
   # RIGHT NOW THIS IS PUTTING FOUR <br> TAGS BETWEEN PARAGRAPHS. UGH.
   
-  author_object = Author.find_by_id("authors", @author.to_i) #one Author Object
+  author_object = Author.find_by_var("authors", "id", @author) #one Author Obj
   @author_name = author_object.name
   
   ##########################################################
@@ -167,7 +168,7 @@ get "/new_article" do
   if params[:existing_location_tag] != "nil"
     @existing_location_tag = params[:existing_location_tag].to_i
 
-    location_object = Location.find_by_id("location_keys", @existing_location_tag)
+    location_object = Location.find_by_var("location_keys", "id", @existing_location_tag)
                     # => Returns one Location Object
     @location_name = location_object.location_name
     @street = location_object.street
