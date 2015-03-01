@@ -1,6 +1,6 @@
 <% @front_page_array.each do |hash| %>
 
-<a href="/articles?id=<%= hash["id"] %>&date=<%= hash["date"] %>&title=<%= hash["title"] %>"><big><b><%= hash["title"] %></b></big></a><br>
+<a href="/articles/<%= hash["date"] %>/<%= hash["id"] %>/<%= hash["title"] %>"><big><b><%= hash["title"] %></b></big></a><br>
 
 <p class="teaser"><b class="date"><%= hash["short_date"] %></b>  <%= hash["author_name"]%><br>
 <em><%= hash["text_bite"]%>...</em></p><br><br>
@@ -8,4 +8,4 @@
 
 
 
-<br><a href="/submit_draft">Click here to submit a draft</a>
+<br><a href="/submit/new">Click here to submit a draft</a>
