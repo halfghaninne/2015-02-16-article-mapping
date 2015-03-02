@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding:0;
+  background-color: #DCD9D8;
+}
+
+body {
+  margin: 5px;
+}
+
+header {
+
+}
+
+
+/******************************/
+/* ***** FRONT PAGE NAV ***** */
+/******************************/
+
+h1 {
+  text-align: center;
+  color: #1A1514;
+}
+
+h1 a {
+  text-decoration: none;
+}
+
+h1 a:visited {
+  text-decoration: none;
+}
+
+/******************************/
+
+.pub_notice {
+  color: #BF0000;
+}
+  
+h2 {
+  color: #1A1514;
+}
+
+h4 {
+  color: #1A1514;
+}
+
+.date {
+  color: #BF0000;
+}
+
+p {
+  color: #1A1514;
+}
+
+.teaser {
+  line-height: 19px;
+}
+
+iframe {
+  border-color: #CBC5C5;
+}
+
+input {
+  background-color: #FFFFFF;
+}
+
+textarea {
+  background-color: #FFFFFF;
+}
+
+select {
+  background-color: #FFFFFF;
+}

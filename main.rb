@@ -45,7 +45,7 @@ get "/submit/new" do
   @location_objects_array = Location.all("location_keys") 
     # => Array of Location Objects
 
-  erb :"articles/submit_draft"
+  erb :"articles/submit_draft", :layout => :"articles/drafts_layout"
 end
 
 get "/submit/review" do
@@ -69,7 +69,7 @@ get "/submit/review" do
     
   end #if loop
   
-  erb :"articles/review_draft"
+  erb :"articles/review_draft", :layout => :"articles/drafts_layout"
 
 end
 
@@ -112,6 +112,6 @@ get "/submit/success" do
     
   get_map_embed(@address)
   
-  erb :"articles/new_article"
+  erb :"articles/new_article", :layout => :"articles/drafts_layout"
   
 end #route handler

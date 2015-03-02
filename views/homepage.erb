@@ -1,11 +1,21 @@
-<% @front_page_array.each do |hash| %>
+<title>Random City Times</title>
 
-<a href="/articles/<%= hash["date"] %>/<%= hash["id"] %>/<%= hash["title"] %>"><big><b><%= hash["title"] %></b></big></a><br>
+<div id ="top_nav">
+  <h1><a href="/">RANDOM CITY TIMES</a></h1><br>
+  <nav><ul>
+    <li><a href="/">About Us</a></li>
+    <li><a href="/">Authors</a></li>
+    <li><a href="/">Where We've Reported</a></li>
+    <li><a href="/submit/new">Submit a draft</a></li>
+  </ul></nav>
+</div>
+
+<div id="articles"><% @front_page_array.each do |hash| %>
+
+<a href="/articles/<%= hash["date"] %>/<%= hash["id"] %>/<%= hash["title"] %>"> <%= hash["title"] %></a><br>
+
 
 <p class="teaser"><b class="date"><%= hash["short_date"] %></b>  <%= hash["author_name"]%><br>
+
 <em><%= hash["text_bite"]%>...</em></p><br><br>
-<% end %>
-
-
-
-<br><a href="/submit/new">Click here to submit a draft</a>
+<% end %></div>

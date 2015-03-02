@@ -1,56 +1,110 @@
 * {
-  max-width: 1200px;
-  margin: 8px auto;
-  left-margin: 8px;
+  margin: 0;
+  padding:0;
   background-color: #DCD9D8;
 }
 
+body {
+  
+}
+
+header {
+
+}
+
+
+/******************************/
+/* ***** FRONT PAGE NAV ***** */
+/******************************/
 
 h1 {
+  text-align: center;
   color: #1A1514;
 }
 
-.pub_notice {
-  color: #BF0000;
-}
-  
-h2 {
-  color: #1A1514;
+h1 a {
+  text-decoration: none;
 }
 
-h4 {
-  color: #1A1514;
+h1 a:visited {
+  text-decoration: none;
 }
 
-.date {
-  color: #BF0000;
+/******************************/
+
+#top_nav {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  position: fixed;
 }
 
-p {
+ul {
+  text-align: center;
+  margin: 0;
+}
+
+li {
+  display: inline-block;
+  list-style: none;
+
+}
+
+li a {
+  padding: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
+  text-decoration: none;
+  color: white;
+  background-color: #1A1514;
+}
+
+li a:hover{
+  background-color: #9B0000;
+  color: white;
+  font-weight: bold;
+}
+
+li a:visited {
+  text-decoration: none;
+}
+
+/******************************/
+/******************************/
+
+
+
+/******************************/
+/* ****** ARTICLE LIST ****** */
+/******************************/
+
+#articles {
+  padding-top: 100px;
+}
+
+#articles a {
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+  font-size: large;
+  font-weight: bold;
   color: #1A1514;
+  background-color: #9A9797;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#articles a:hover {
+  background-color: #DCD9D8;
 }
 
 .teaser {
-  line-height: 19px;
+  padding-top: 7px;
+  padding-left: 5px;
 }
 
+/******************************/
+/******************************/
 
-a {
-  color: #1A1514;
-}
 
-iframe {
-  border-color: #CBC5C5;
-}
-
-input {
-  background-color: #FFFFFF;
-}
-
-textarea {
-  background-color: #FFFFFF;
-}
-
-select {
-  background-color: #FFFFFF;
-}
